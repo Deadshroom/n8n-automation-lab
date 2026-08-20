@@ -1,0 +1,108 @@
+{
+  "name": "Section 2 - Error Handler (Error Workflow)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2ff80a1b-a6f7-46eb-a740-f960f06e4394",
+      "name": "TriggerError"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://learn.app.n8n.cloud/webhook/course/n8n103/error-report",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Assessment-ID",
+              "value": "YOUR_ASSESSMENT_ID"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflow_name",
+              "value": "={{ $json.workflow.name }}"
+            },
+            {
+              "name": "workflow_id",
+              "value": "={{ $json.workflow.id }}"
+            },
+            {
+              "name": "execution_url",
+              "value": "={{ $json.execution.url }}"
+            },
+            {
+              "name": "error_message",
+              "value": "={{ $json.execution.error.message }}"
+            },
+            {
+              "name": "failed_node",
+              "value": "={{ $json.execution.lastNodeExecuted }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ff7190f2-caf2-4894-97dd-3705ca204614",
+      "name": "ReportError",
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "n8n Academy API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Section 2 - Error Handler (Error Workflow)\n\nOwned By: Brendon Hurst\nLast Updated: 19.08.2026\n\nError workflow that captures failures from linked workflows and\nreports error details to the Academy endpoint.\n\n## Trigger\n- Error Trigger: Fires when a linked workflow fails in production\n\n## Data Captured\n- workflow.name: Name of failed workflow\n- workflow.id: Workflow ID\n- execution.url: Link to failed execution\n- execution.error.message: Error details\n- execution.lastNodeExecuted: Node that failed\n\n## Endpoint\n- POST /webhook/course/n8n103/error-report\n\n## Requirements\n- Must be published to be used as an error workflow\n- Only triggers on production executions, not manual tests\n\nPart of: n8n Foundations Program, N8N103 Course, Section 2",
+        "height": 672,
+        "width": 704
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        -752
+      ],
+      "id": "394d1569-0330-46f5-bf24-bc759f7c7c95",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "TriggerError": {
+      "main": [
+        [
+          {
+            "node": "ReportError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": null
+}

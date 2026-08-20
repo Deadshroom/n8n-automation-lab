@@ -1,0 +1,97 @@
+{
+  "name": "Section 2 - Failure Test",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "course/n8n103/failure-test",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "72a6437c-1b0d-4d3a-99d1-1bb994553a46",
+      "name": "TriggerWebhook",
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "n8n Academy API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://learn.app.n8n.cloud/webhook/course/n8n103/guaranteed-failure",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Assessment-ID",
+              "value": "YOUR_ASSESSMENT_ID"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "3a10cf08-97ed-4813-b5dd-eeb40ce82102",
+      "name": "CallFailingEndpoint",
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "n8n Academy API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Section 2 - Failure Test\n\nOwned By: Brendon Hurst\nLast Updated: 19.08.2026\n\nWebhook workflow that intentionally fails to test error workflow\ntriggering. Called by the main Debugging Practice workflow.\n\n## Endpoint\n- GET /webhook/course/n8n103/failure-test\n- Authentication: Header Auth (n8n Academy API Key)\n\n## Flow\n1. TriggerWebhook: Receives request and responds immediately\n2. CallFailingEndpoint: Calls guaranteed-failure endpoint and throws\n3. Execution ends in an unhandled error\n4. Linked Error Workflow (Section 2 - Error Handler) runs\n\n## Error Configuration\n- CallFailingEndpoint left on default On Error (Stop Workflow)\n- Error Workflow linked to Section 2 - Error Handler\n\n## Requirements\n- Must be published for production execution\n- Must have Error Workflow configured in settings\n\nPart of: n8n Foundations Program, N8N103 Course, Section 2",
+        "height": 784,
+        "width": 576
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -768
+      ],
+      "id": "ff06f7cf-74f5-4acb-a349-08ad64360494",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "TriggerWebhook": {
+      "main": [
+        [
+          {
+            "node": "CallFailingEndpoint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "REPLACE_WITH_ERROR_WORKFLOW_ID",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
